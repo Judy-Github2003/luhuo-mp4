@@ -1,0 +1,13 @@
+{
+  "code": 402,
+  "message": "insufficient quota; please check your billing settings",
+  "success_items": [],
+  "failed_items": [],
+  "total_requested": 0,
+  "total_success": 0,
+  "total_failed": 0,
+  "base_resp": {
+    "status_code": 0,
+    "status_msg": "success"
+  }
+}

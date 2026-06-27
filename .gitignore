@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.*
+*.local
+*.secret
+*.key
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build / cache
+dist/
+build/
+.cache/
+.remotion/
+.next/
+coverage/
+
+# Rendered outputs
+out/
+
+# Generated media assets
+public/audio/*.mp3
+public/audio/*.words.json
+public/videos/
+public/images/
+img/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Temporary files
+tmp/
+temp/

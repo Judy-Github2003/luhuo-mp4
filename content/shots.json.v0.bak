@@ -1,0 +1,87 @@
+{
+  "videoId": "luhuo-heritage-001",
+  "title": "一件藏袍里的炉霍 (测试片)",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "language": "zh-CN",
+  "tts": {
+    "model": "speech-2.8-hd",
+    "voiceId": "male-qn-jingying",
+    "speed": 1
+  },
+  "outro": {
+    "enabled": true,
+    "seconds": 1.5
+  },
+  "shots": [
+    {
+      "id": "shot-01",
+      "kind": "title",
+      "duration": 3,
+      "zhNarration": "在川西高原的风里,有一座叫炉霍的地方。",
+      "zhSubtitle": "在川西高原的风里,有一座叫炉霍的地方。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "color-block",
+        "background": "#3a1f1a",
+        "accent": "#d4a017",
+        "effectiveType": "color-block"
+      },
+      "start": 0.04,
+      "end": 2.86
+    },
+    {
+      "id": "shot-02",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "这里的天空很近,云走得很慢。",
+      "zhSubtitle": "这里的天空很近,云走得很慢。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-02.png",
+        "showTitle": true,
+        "effectiveType": "image"
+      },
+      "start": 2.86,
+      "end": 5.46
+    },
+    {
+      "id": "shot-03",
+      "kind": "scene",
+      "duration": 4,
+      "zhNarration": "山脊上飘着五彩的经幡。",
+      "zhSubtitle": "山脊上飘着五彩的经幡。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "video",
+        "src": "videos/shot-03.mp4",
+        "muted": true,
+        "showTitle": true,
+        "effectiveType": "video"
+      },
+      "start": 5.46,
+      "end": 7.68
+    },
+    {
+      "id": "shot-04",
+      "kind": "ending",
+      "duration": 3,
+      "zhNarration": "今天的炉霍,等你来听。",
+      "zhSubtitle": "今天的炉霍,等你来听。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "color-block",
+        "background": "#151515",
+        "accent": "#d4a017",
+        "effectiveType": "color-block"
+      },
+      "start": 7.68,
+      "end": 10.11
+    }
+  ],
+  "totalDurationSeconds": 11.93,
+  "contentDurationSeconds": 10.43,
+  "audioLengthMs": 10425
+}

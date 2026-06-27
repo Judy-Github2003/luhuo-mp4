@@ -1,0 +1,43 @@
+# build-mcp-args.ps1
+# 组装 matrix_batch_image_to_video 的 JSON 参数
+# 输出: D:\YouTubeVideo\luhuo-mp4\mcp_args.json
+
+$dir = "D:\YouTubeVideo\luhuo-mp4\img"
+$files = [System.IO.Directory]::GetFiles($dir) | Sort-Object {[System.IO.Path]::GetFileName($_)}
+$outFile = "D:\YouTubeVideo\luhuo-mp4\mcp_args.json"
+
+$prompts = @(
+  '请基于我上传的参考图，生成一段 6 秒的横屏 16:9 图生视频。主题：炉霍高原的开场镜头。川西高原清晨或傍晚的辽阔感，远山、草原、经幡、阳光和空气层次都要保留。整体是电影级文博纪录片风，真实但略带艺术化，安静、克制、庄重，高级文旅宣传片质感。请保持参考图的构图和色调，不要大改画面内容。动作轻微、自然、稳定。镜头只做缓慢向前推进，风轻轻吹动经幡和草地，云层和光线可以有非常轻微的变化。不要夸张运动，不要剧烈摇镜头。不要出现任何文字、字幕、logo、水印、藏文、中文或展牌文字。',
+  '请基于我上传的参考图，生成一段 6 秒的横屏 16:9 图生视频。主题：博物馆中的传统藏袍主视觉。请保持这件藏袍作为画面主体，突出厚重衣襟、边饰、束带、毛边、织物纹理和传统服饰陈列感。整体风格是电影级文博服饰纪录片风，暖色展灯、安静的博物馆氛围、真实但略带艺术化。请保留参考图的构图和主色调，不要随意增加新元素。镜头只做缓慢推近，布料可以有极轻微自然摆动，展灯光线有轻微柔和变化。动作一定要克制，不要让服装漂浮，不要让衣服乱变形。不要出现任何文字、字幕、logo、水印、藏文、中文或展牌文字。',
+  '请基于我上传的参考图，生成一段 6 秒的横屏 16:9 图生视频。主题：传统银饰与松石点缀的细节特写。请突出金属雕花、松石、红色珠饰、编织带和手工装饰感，画面要有细节质感和博物馆高级展陈气质。整体风格是电影级文博纪录片风，暖色灯光，真实但略带艺术化。请保持参考图的构图与近景特写关系，不要把它变成完全不同的物件。镜头只做小幅度缓慢环绕或轻微推进，金属表面可以有非常轻微的反光变化，景深和焦点可以轻柔变化，但动作要稳，不要剧烈晃动。不要出现任何文字、字幕、logo、水印、藏文、中文或展牌文字。',
+  '请基于我上传的参考图，生成一段 6 秒的横屏 16:9 图生视频。主题：年轻人物穿着传统服饰，站在博物馆空间中。人物端庄、安静、有文化气质，服饰真实，不夸张，不做复杂动作。整体风格是电影级文博服饰纪录片风，暖色展厅光线，背景虚化，真实但略带艺术化。请尽量保持参考图的人物构图、服饰风格和背景空间，不要更换人物身份，不要变成时装大片或偶像写真。动作只允许轻轻转头、轻微呼吸、非常轻微整理衣襟，镜头缓慢推进即可。不要跳舞，不要大幅动作，不要走来走去。请特别注意面部稳定、手部稳定、服饰边缘稳定，不要畸形，不要多手指，不要错脸。不要出现任何文字、字幕、logo、水印、藏文、中文或展牌文字。',
+  '请基于我上传的参考图，生成一段 6 秒的横屏 16:9 图生视频。主题：结尾氛围镜头。画面要把传统服饰纹理、高原山谷和夕阳结合起来，作为影片结尾的视觉背景。整体风格是电影级文博纪录片风，真实但略带艺术化，安静、抒情、克制。请尽量保持参考图的构图和光线关系，不要改变主体方向。镜头只做缓慢推近或非常轻微平移，远处阳光和云层可以有轻微变化，服饰边缘可以有非常轻微的风感。整体动作要很轻，最后画面要稳定、适合后期叠加片名。请不要在画面里生成任何文字。结尾标题会在后期由 Remotion 叠加。不要出现任何文字、字幕、logo、水印、藏文、中文或展牌文字。'
+)
+
+$imageList = @()
+$promptList = @()
+$refTypeList = @()
+$durationList = @()
+$resolutionList = @()
+
+for ($i = 0; $i -lt 5; $i++) {
+  $imageList += @{ file = $files[$i] }
+  $promptList += $prompts[$i]
+  $refTypeList += 'first_frame'
+  $durationList += 6
+  $resolutionList += '1080P'
+}
+
+$args = @{
+  image_list         = $imageList
+  prompt_list        = $promptList
+  reference_type_list = $refTypeList
+  duration_list      = $durationList
+  resolution_list    = $resolutionList
+}
+
+$json = $args | ConvertTo-Json -Depth 10
+[System.IO.File]::WriteAllText($outFile, $json, [System.Text.Encoding]::UTF8)
+Write-Host "Wrote $outFile"
+Write-Host "  size: $((Get-Item $outFile).Length) bytes"
+Write-Host "  images: 5, duration: 6s, resolution: 1080P"

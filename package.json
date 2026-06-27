@@ -1,0 +1,25 @@
+{
+  "name": "luhuo-mp4",
+  "version": "0.1.0",
+  "private": true,
+  "description": "luhuo-mp4 — 炉霍传统文化横屏视频自动化项目 (Remotion + MiniMax TTS)",
+  "scripts": {
+    "audio": "node scripts/generate-audio.mjs",
+    "audio:dry": "node scripts/generate-audio.mjs --dry-run",
+    "probe:tts": "node scripts/probe-minimax-tts.mjs",
+    "build": "node scripts/build-video.mjs",
+    "build:dry": "node scripts/build-video.mjs --dry-run",
+    "render": "remotion render src/index.ts LuhuoMain out/luhuo-main.mp4 --browser-executable=\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" --concurrency=1",
+    "preview": "remotion preview src/index.ts --browser-executable=\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\""
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.473",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "remotion": "4.0.473"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.9",
+    "typescript": "^5.9.2"
+  }
+}

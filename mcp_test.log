@@ -1,0 +1,4 @@
+Error: Invalid JSON: Bad escaped character in JSON at position 56 (line 1 column 57)
+Tip: wrap JSON in single quotes, e.g. mavis mcp call <srv> <tool> '{"key":"value"}'
+Or use --stdin: echo '{"key":"value"}' | mavis mcp call <srv> <tool> --stdin
+Or use --file:  mavis mcp call <srv> <tool> --file args.json

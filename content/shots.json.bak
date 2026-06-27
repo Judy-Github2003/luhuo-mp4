@@ -1,0 +1,225 @@
+{
+  "videoId": "luhuo-heritage-001",
+  "title": "一件藏袍里的炉霍",
+  "subtitle": "炉霍藏族传统文化视觉短片",
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "language": "zh-CN",
+  "tts": {
+    "model": "speech-2.8-hd",
+    "voiceId": "male-qn-jingying",
+    "speed": 1,
+    "languageBoost": "Chinese"
+  },
+  "outro": {
+    "enabled": true,
+    "seconds": 2.5
+  },
+  "style": {
+    "name": "cinematic Tibetan heritage museum film",
+    "description": "电影级文博服饰纪录片风，博物馆暖光，高原自然光，传统藏族服饰，银饰细节，低饱和矿物色，慢镜头，无画面文字"
+  },
+  "shots": [
+    {
+      "id": "shot-01",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "在川西高原的风里，有一座叫炉霍的地方。",
+      "zhSubtitle": "在川西高原的风里，有一座叫炉霍的地方。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "video",
+        "src": "videos/shot-01.mp4",
+        "muted": true,
+        "showTitle": false,
+        "effectiveType": "video"
+      },
+      "start": 0.04,
+      "end": 3.33
+    },
+    {
+      "id": "shot-02",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "山川、草原和岁月，在这里留下安静的纹理。",
+      "zhSubtitle": "山川、草原和岁月，在这里留下安静的纹理。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-02.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 3.33,
+      "end": 8.28
+    },
+    {
+      "id": "shot-03",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "走进博物馆，炉霍的记忆被一件件保存下来。",
+      "zhSubtitle": "走进博物馆，炉霍的记忆被一件件保存下来。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-03.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 8.28,
+      "end": 12.71
+    },
+    {
+      "id": "shot-04",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "一件藏袍，不只是衣服，也是高原生活的答案。",
+      "zhSubtitle": "一件藏袍，不只是衣服，也是高原生活的答案。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "video",
+        "src": "videos/shot-04.mp4",
+        "muted": true,
+        "showTitle": false,
+        "effectiveType": "video"
+      },
+      "start": 13.23,
+      "end": 17.15
+    },
+    {
+      "id": "shot-05",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "厚重的衣襟抵御风雪，宽大的袖口回应日常劳作。",
+      "zhSubtitle": "厚重的衣襟抵御风雪，宽大的袖口回应日常劳作。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-05.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 17.15,
+      "end": 22.19
+    },
+    {
+      "id": "shot-06",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "腰带、银饰和边纹，让身份、审美与祝愿彼此相连。",
+      "zhSubtitle": "腰带、银饰和边纹，让身份、审美与祝愿彼此相连。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "video",
+        "src": "videos/shot-06.mp4",
+        "muted": true,
+        "showTitle": false,
+        "effectiveType": "video"
+      },
+      "start": 22.19,
+      "end": 29.82
+    },
+    {
+      "id": "shot-07",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "那些细密的针脚，像时间留下的线索。",
+      "zhSubtitle": "那些细密的针脚，像时间留下的线索。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-07.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 30.28,
+      "end": 32.88
+    },
+    {
+      "id": "shot-08",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "从服饰到器物，传统不是遥远的陈列，而是曾经真实的生活。",
+      "zhSubtitle": "从服饰到器物，传统不是遥远的陈列，而是曾经真实的生活。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-08.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 32.88,
+      "end": 38.81
+    },
+    {
+      "id": "shot-09",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "在暖色的展灯下，旧物重新拥有被观看的光。",
+      "zhSubtitle": "在暖色的展灯下，旧物重新拥有被观看的光。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-09.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 38.81,
+      "end": 43.38
+    },
+    {
+      "id": "shot-10",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "当年轻人再次穿上传统服饰，文化就从展柜走向今天。",
+      "zhSubtitle": "当年轻人再次穿上传统服饰，文化就从展柜走向今天。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "video",
+        "src": "videos/shot-10.mp4",
+        "muted": true,
+        "showTitle": false,
+        "effectiveType": "video"
+      },
+      "start": 43.81,
+      "end": 48.25
+    },
+    {
+      "id": "shot-11",
+      "kind": "scene",
+      "duration": 5,
+      "zhNarration": "风吹过草原，也吹动仍在延续的记忆。",
+      "zhSubtitle": "风吹过草原，也吹动仍在延续的记忆。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "image",
+        "src": "images/shot-11.png",
+        "showTitle": false,
+        "effectiveType": "image"
+      },
+      "start": 48.25,
+      "end": 51.83
+    },
+    {
+      "id": "shot-12",
+      "kind": "scene",
+      "duration": 6,
+      "zhNarration": "一件藏袍里的炉霍，是高原留给今天的一段文化回声。",
+      "zhSubtitle": "一件藏袍里的炉霍，是高原留给今天的一段文化回声。",
+      "boSubtitle": "",
+      "visual": {
+        "type": "video",
+        "src": "videos/shot-12.mp4",
+        "muted": true,
+        "showTitle": false,
+        "effectiveType": "video"
+      },
+      "start": 51.83,
+      "end": 57.46
+    }
+  ],
+  "totalDurationSeconds": 60.26,
+  "contentDurationSeconds": 57.76,
+  "audioLengthMs": 57757
+}
