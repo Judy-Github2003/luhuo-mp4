@@ -1,29 +1,29 @@
-# Shot 时长排查 (v4)
+# Shot 时长排查 (v5)
 
-> 生成时间: 2026-06-27T16:24:02.411Z
+> 生成时间: 2026-06-27T17:18:03.039Z
 > 数据源: `content/shots.json` (未修改)
 > 脚本: `scripts/probe-shot-durations.mjs`
 
-> **v4.1 补充说明**：本表显示的 `shot-12.end = 57.46` 是 shots.json 原始值。
-> v4.1 在渲染层把最后一个 shot 的 `endFrame` 撑到 `durationInFrames`（1808 帧 = 60.27s），
-> 所以实际渲染时 shot-12 Sequence 会延伸到 composition 末尾，不会出现 2.8s 尾段空画面。
-> **不要把本表的 shot-12 数值当作 v4.1 的 bug**。
+> **v5 说明**：本表显示的是 v5（12 段真视频版本）状态。所有 shot 已是 `type: video`。
+> 11 段 `media_longer_cut` 是 video 比 Sequence 长（被 Remotion 截断，接受）；
+> shot-08 `media_shorter_blank` 是 sequence 5.93s > video 5.88s（后段 0.05s 可能空帧，肉眼几乎不可见，接受）；
+> shot-06 `aligned` 是 5.88s = 5.88s 完美对齐。
 
 ## 1. 时长对比表
 
 | shot | type | sequence start (s) | sequence end (s) | sequence (s) | media (s) | status |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | shot-01 | video | 0.04 | 3.33 | 3.29 | 5.88 | media_longer_cut |
-| shot-02 | image | 3.33 | 8.28 | 4.95 | N/A | image_ok |
-| shot-03 | image | 8.28 | 12.71 | 4.43 | N/A | image_ok |
+| shot-02 | video | 3.33 | 8.28 | 4.95 | 5.88 | media_longer_cut |
+| shot-03 | video | 8.28 | 12.71 | 4.43 | 5.88 | media_longer_cut |
 | shot-04 | video | 12.71 | 17.15 | 4.44 | 5.88 | media_longer_cut |
-| shot-05 | image | 17.15 | 22.19 | 5.04 | N/A | image_ok |
+| shot-05 | video | 17.15 | 22.19 | 5.04 | 5.88 | media_longer_cut |
 | shot-06 | video | 22.19 | 28.07 | 5.88 | 5.88 | aligned |
-| shot-07 | image | 28.07 | 32.88 | 4.81 | N/A | image_ok |
-| shot-08 | image | 32.88 | 38.81 | 5.93 | N/A | image_ok |
-| shot-09 | image | 38.81 | 43.38 | 4.57 | N/A | image_ok |
+| shot-07 | video | 28.07 | 32.88 | 4.81 | 5.88 | media_longer_cut |
+| shot-08 | video | 32.88 | 38.81 | 5.93 | 5.88 | media_shorter_blank |
+| shot-09 | video | 38.81 | 43.38 | 4.57 | 5.88 | media_longer_cut |
 | shot-10 | video | 43.38 | 48.25 | 4.87 | 5.88 | media_longer_cut |
-| shot-11 | image | 48.25 | 51.83 | 3.58 | N/A | image_ok |
+| shot-11 | video | 48.25 | 51.83 | 3.58 | 5.88 | media_longer_cut |
 | shot-12 | video | 51.83 | 57.46 | 5.63 | 5.88 | media_longer_cut |
 
 ## 2. 状态码说明

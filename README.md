@@ -19,18 +19,26 @@
 - ChatGPT 图生图（首帧参考图）
 - ffmpeg / ffprobe（封装、探测）
 
-## 当前状态（v4.1）
+## 当前状态（v5 12-video）
 
 - 已出片：`out/luhuo-main.mp4`（不入库）
   - v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
   - v4.1 备份：`out/luhuo-main-v4.1-no-empty-head-tail.mp4`
-- 视觉结构：**5 段真视频 + 7 张静态图**（共 12 个镜头）
-  - 真视频：`shot-01 / shot-04 / shot-06 / shot-10 / shot-12`
-  - 静态图：`shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11`
+  - v5 备份：`out/luhuo-main-v5-12video.mp4`
+- 视觉结构：**12 段真视频**（v3 Hub 5 段 + v5 Hub 7 段）
+  - 全部 video：`shot-01 ~ shot-12` 都是 `videos/shot-XX.mp4`
 - 音频：1 条普通话旁白，含 254 个字级时间戳
 - 字幕：中文字幕真正贴底（不再偏中），藏文为空时不渲染
 
-### v4.1 修复（最新）
+### v5 升级（最新）
+
+1. **7 段静态图升级为视频**：shot-02/03/05/07/08/09/11 通过 MiniMax Hub (Hailuo-2.3, 图生视频 first_frame, 1080P) 生成
+2. **12 段全是真视频**：v3 的 5 段 + v5 的 7 段，总计 12 段视频
+3. **shots.json 同步改造**：7 段 visual.type 从 `image` 改为 `video`，src 指向 `videos/shot-XX.mp4`
+4. **保留所有 v4 / v4.1 修复**：黑场转场删除、字幕贴底、首帧 frame 0、尾帧 durationInFrames 兜底
+5. **未做**：12 独立视频架构、未补藏文、未重跑 TTS、未改字幕文本
+
+### v4.1 修复
 
 1. **首帧兜底**：第一个 shot 强制从 `frame 0` 开始（避免 shot-01.start=0.04 → frame 1 起 → 第 0 帧空）
 2. **尾帧兜底**：最后一个 shot 撑到 `durationInFrames`（避免 shot-12.end=57.46 → 1808 帧 → 1724-1808 共 2.8s 空）
@@ -110,10 +118,10 @@ remotion.config.ts                   Remotion 配置
 
 ## 后续工程优先级（不在本任务范围）
 
-v4 已修复：黑场转场、字幕贴底、shot-06 空帧、3 个间隙。
+v3 → v4 → v4.1 → v5 全部修复：黑场转场、字幕贴底、首帧 frame 0、尾帧 durationInFrames、shot-06 空帧、3 个间隙、7 段静态图升级为视频。
 
 仍未处理：
-1. shot-01 / shot-04 / shot-10 / shot-12 的 video 比 Sequence 长，会被 Remotion 截断约 1-2s（v4 接受，v5 再处理）
+1. shot-01 / 04 / 08 / 10 / 11 / 12 的 video 5.88s 与 Sequence 4-5s 不严格对齐，会被 Remotion 截断或尾部 0.05s 空帧（v5 接受，v6 再处理）
 2. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
 3. 藏文字幕补齐
 4. 旁白与镜头起止时间更精细对齐

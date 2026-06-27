@@ -10,37 +10,46 @@
 
 - **片名**：《一件藏袍里的炉霍》
 - **主题**：四川甘孜炉霍县藏族传统文化 / 炉霍博物馆相关视觉短片
-- **时长**：约 60 秒（v4.1 实测 ~60.31s）
+- **时长**：约 60 秒（v5 实测 ~60.31s）
 - **比例**：横屏 16:9
 - **规格**：1920×1080 · 30fps · MP4 · h264
 - **旁白**：普通话男声
 - **字幕**：中文字幕真正贴底；藏文字段先留空（不渲染）
-- **技术路线**：Remotion + MiniMax TTS + MiniMax Hub 视频 / ChatGPT 静态图
+- **技术路线**：Remotion + MiniMax TTS + MiniMax Hub 图生视频（Hailuo-2.3）+ ChatGPT 静态图
 
 ---
 
-## 2. 当前 v4.1 状态
+## 2. 当前 v5 状态
 
-v4.1 已出片（替代 v4）：
+v5 已出片（替代 v4.1）：
 
 - **当前成片**：`out/luhuo-main.mp4`（不入库）
 - v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
 - v4.1 备份：`out/luhuo-main-v4.1-no-empty-head-tail.mp4`
+- v5 备份：`out/luhuo-main-v5-12video.mp4`
 - 时长：约 60.31 秒（1808 帧 @ 30fps）
 - 分辨率：1920×1080
-- 视觉结构：
-  - 5 段真视频：`shot-01 / shot-04 / shot-06 / shot-10 / shot-12`
-  - 7 张静态图：`shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11`
+- 视觉结构：**12 段真视频**（v3 Hub 5 段 + v5 Hub 7 段）
+  - v3 Hub 生成：shot-01 / shot-04 / shot-06 / shot-10 / shot-12
+  - v5 Hub 生成：shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11
 - 转场：**shot 之间直接硬切**，无 fade、无黑场、无 crossfade
 - 字幕：中文字幕**真正贴底**（普通 absolute div + bottom: 32）；藏文为空时不渲染
 
-### v4.1 修复（最新）
+### v5 升级（最新）
 
 | 类别 | 改动 |
 |---|---|
-| 首帧兜底 | `LuhuoMain.tsx` map 块：第一个 shot 强制 `startFrame = 0`（避免 shot-01.start=0.04 → frame 1 起 → 第 0 帧空） |
-| 尾帧兜底 | `LuhuoMain.tsx` map 块：最后一个 shot 强制 `endFrame = durationInFrames`（避免 shot-12.end=57.46 → 1808 帧 → 1724-1808 共 2.8s 空） |
-| shots.json | **未改**（避免被 TTS 脚本覆盖） |
+| 7 段静态图 → 视频 | `content/shots.json` shot-02/03/05/07/08/09/11 的 `visual.type` 从 `image` 改为 `video`，src 从 `images/shot-XX.png` 改为 `videos/shot-XX.mp4` |
+| Hub 生成 | 用 MiniMax Hub / Hailuo-2.3 / 图生视频 first_frame / 1080P / 实际时长 5.875s / 段 |
+| 不固定时长 | 不锁 6s，按 Hub 实际输出；本地通过 shots.json start/end + Remotion 自动适配 |
+| 不覆盖 5 段 | shot-01/04/06/10/12.mp4 完全未动 |
+
+### v4.1 修复
+
+| 类别 | 改动 |
+|---|---|
+| 首帧兜底 | `LuhuoMain.tsx` map 块：第一个 shot 强制 `startFrame = 0` |
+| 尾帧兜底 | `LuhuoMain.tsx` map 块：最后一个 shot 强制 `endFrame = durationInFrames` |
 
 ### v4 主要变更
 
@@ -64,13 +73,15 @@ v4.1 已出片（替代 v4）：
 4. ✅ **3 个间隙**（v4）：shot-04/07/10 的 start 填实
 5. ✅ **首帧空画面**（v4.1）：第一个 shot 强制 frame 0
 6. ✅ **尾段空画面**（v4.1）：最后一个 shot 撑到 durationInFrames
+7. ✅ **7 段静态图升级为视频**（v5）：12 段全是真视频
 
 ## 4. 仍未处理的问题
 
-1. ⚠️ shot-01 / shot-04 / shot-10 / shot-12 的 video 5.88s > Sequence 4-5s，会被 Remotion 截断（v4 接受，v5 再处理）
-2. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
-3. 藏文字幕补齐
-4. 旁白与镜头起止时间更精细对齐
+1. ⚠️ shot-01 / 04 / 10 / 12 的 video 5.88s > Sequence 4-5s，会被 Remotion 截断（v5 接受）
+2. ⚠️ shot-08 sequence 5.93s > video 5.88s，后段约 0.05s 可能是空帧（v5 接受，肉眼几乎不可见）
+3. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
+4. 藏文字幕补齐
+5. 旁白与镜头起止时间更精细对齐
 
 ---
 

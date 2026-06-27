@@ -46,10 +46,11 @@
       "zhSubtitle": "山川、草原和岁月，在这里留下安静的纹理。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-02.png",
+        "type": "video",
+        "src": "videos/shot-02.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 3.33,
       "end": 8.28
@@ -62,10 +63,11 @@
       "zhSubtitle": "走进博物馆，炉霍的记忆被一件件保存下来。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-03.png",
+        "type": "video",
+        "src": "videos/shot-03.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 8.28,
       "end": 12.71
@@ -95,10 +97,11 @@
       "zhSubtitle": "厚重的衣襟抵御风雪，宽大的袖口回应日常劳作。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-05.png",
+        "type": "video",
+        "src": "videos/shot-05.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 17.15,
       "end": 22.19
@@ -128,10 +131,11 @@
       "zhSubtitle": "那些细密的针脚，像时间留下的线索。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-07.png",
+        "type": "video",
+        "src": "videos/shot-07.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 28.07,
       "end": 32.88
@@ -144,10 +148,11 @@
       "zhSubtitle": "从服饰到器物，传统不是遥远的陈列，而是曾经真实的生活。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-08.png",
+        "type": "video",
+        "src": "videos/shot-08.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 32.88,
       "end": 38.81
@@ -160,10 +165,11 @@
       "zhSubtitle": "在暖色的展灯下，旧物重新拥有被观看的光。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-09.png",
+        "type": "video",
+        "src": "videos/shot-09.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 38.81,
       "end": 43.38
@@ -193,10 +199,11 @@
       "zhSubtitle": "风吹过草原，也吹动仍在延续的记忆。",
       "boSubtitle": "",
       "visual": {
-        "type": "image",
-        "src": "images/shot-11.png",
+        "type": "video",
+        "src": "videos/shot-11.mp4",
+        "muted": true,
         "showTitle": false,
-        "effectiveType": "image"
+        "effectiveType": "video"
       },
       "start": 48.25,
       "end": 51.83
