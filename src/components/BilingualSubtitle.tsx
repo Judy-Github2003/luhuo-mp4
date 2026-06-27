@@ -1,15 +1,16 @@
 // src/components/BilingualSubtitle.tsx
 //
 // 中/藏双语字幕组件
-//  - 位于画面下方安全区
+//  - 真正贴底（普通 absolute div，不再用 AbsoluteFill）
 //  - 第一行: 中文 (zh)
 //  - 第二行: 藏文 (bo) — 为空时整行隐藏
 //  - 底部半透明深色背景
 //  - 不做卡拉 OK 高亮 (整段显示)
 //  - 字幕文本/时间由父组件传入 (activeShot), 不直接依赖 JSON
+//
+// v4 修正: 外层由 AbsoluteFill 改为普通 absolute div, 真正贴底
 
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
 
 export type BilingualSubtitleProps = {
   zh: string;           // 中文文本 (可空)
@@ -17,9 +18,9 @@ export type BilingualSubtitleProps = {
   // 布局参数 (可调)
   fontSizeZh?: number;  // 默认 44
   fontSizeBo?: number;  // 默认 36
-  bottom?: number;      // 距底 px, 默认 80
+  bottom?: number;      // 距底 px, 默认 32
   maxWidthRatio?: number; // 0~1, 默认 0.84
-  bgOpacity?: number;   // 0~1, 默认 0.55
+  bgOpacity?: number;   // 0~1, 默认 0.6
 };
 
 export const BilingualSubtitle: React.FC<BilingualSubtitleProps> = ({
@@ -27,7 +28,7 @@ export const BilingualSubtitle: React.FC<BilingualSubtitleProps> = ({
   bo = '',
   fontSizeZh = 44,
   fontSizeBo = 36,
-  bottom = 24,
+  bottom = 32,
   maxWidthRatio = 0.84,
   bgOpacity = 0.6,
 }) => {
@@ -35,22 +36,22 @@ export const BilingualSubtitle: React.FC<BilingualSubtitleProps> = ({
   if (!zh && !bo) return null;
 
   const hasBoth = Boolean(zh && bo);
-  const padding = `${hasBoth ? '18px 56px' : '18px 56px'}`;
   const lineHeight = 1.3;
 
-  // 1920 基准宽度, 用 maxWidthRatio 限制
-  // maxWidth 由父组件通过 remotion 的 <AbsoluteFill> + width 控制
+  // 外层: 普通 absolute div, 真正贴底 (不再用 AbsoluteFill)
+  // 避免 AbsoluteFill 撑满全屏导致字幕被 flex 居中到画面中部
   return (
-    <AbsoluteFill
+    <div
       style={{
-        alignItems: 'center',
+        position: 'absolute',
+        left: 0,
+        right: 0,
         bottom,
         display: 'flex',
         justifyContent: 'center',
-        left: 0,
-        position: 'absolute',
-        right: 0,
-        top: undefined,
+        alignItems: 'flex-end',
+        pointerEvents: 'none',
+        zIndex: 20,
       }}
     >
       <div
@@ -98,6 +99,6 @@ export const BilingualSubtitle: React.FC<BilingualSubtitleProps> = ({
           </div>
         )}
       </div>
-    </AbsoluteFill>
+    </div>
   );
 };

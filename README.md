@@ -19,14 +19,30 @@
 - ChatGPT 图生图（首帧参考图）
 - ffmpeg / ffprobe（封装、探测）
 
-## 当前状态（v3）
+## 当前状态（v4）
 
-- 已出片：`out/luhuo-main.mp4`（不入库）
+- 已出片：`out/luhuo-main.mp4`（不入库），v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
 - 视觉结构：**5 段真视频 + 7 张静态图**（共 12 个镜头）
   - 真视频：`shot-01 / shot-04 / shot-06 / shot-10 / shot-12`
   - 静态图：`shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11`
 - 音频：1 条普通话旁白，含 254 个字级时间戳
-- 字幕：中文字幕可显示，藏文为空
+- 字幕：中文字幕真正贴底（不再偏中），藏文为空时不渲染
+
+### v4 主要修复
+
+1. **彻底禁止黑场转场**
+   - 删除 v3 的本地 `FadeInOut` 组件
+   - shot 之间采用**直接硬切**，不再 fade
+   - 外层 `<AbsoluteFill>` 背景从 `#0a0a0a` 改为 `transparent`，避免间隙期间透出黑色
+   - 不引入 `@remotion/transitions`、不使用 `TransitionSeries`
+2. **字幕真正贴底**
+   - `BilingualSubtitle` 外层由 `<AbsoluteFill>` 改为普通 `<div>` + 显式 `position: absolute; bottom: 32`
+   - 不再被 AbsoluteFill 撑满导致字幕被 flex 居中到画面中部
+3. **时长排查与修复**
+   - 新增 `scripts/probe-shot-durations.mjs`：自动对比 shots.json Sequence 时长 vs ffprobe 真实时长
+   - 修复 `shot-06.end`（22.19+5.88=28.07），避免 Sequence 7.63s 但 video 5.88s 导致 1.75s 黑底
+   - 填实 3 个间隙（shot-03↔04 / 06↔07 / 09↔10 各 0.4-0.5s）
+   - 输出 `docs/shot-durations.md`，作为排查记录
 
 ## 上传到 GitHub 时的范围
 
@@ -85,11 +101,13 @@ remotion.config.ts                   Remotion 配置
 
 ## 后续工程优先级（不在本任务范围）
 
-1. 时间对齐 / 黑屏问题
-2. 转场衔接（更像"黑一下衔接"）
-3. 字幕贴底（目前偏中）
-4. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
-5. 藏文字幕补齐
+v4 已修复：黑场转场、字幕贴底、shot-06 空帧、3 个间隙。
+
+仍未处理：
+1. shot-01 / shot-04 / shot-10 / shot-12 的 video 比 Sequence 长，会被 Remotion 截断约 1-2s（v4 接受，v5 再处理）
+2. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
+3. 藏文字幕补齐
+4. 旁白与镜头起止时间更精细对齐
 
 ## 许可与备注
 

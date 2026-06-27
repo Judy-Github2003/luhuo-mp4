@@ -12,7 +12,9 @@
 //   activeShot 切换时, 字幕也切换 (BilingualSubtitle 接收 activeShot.zhSubtitle / .boSubtitle)
 //   visual 按 shot.kind 选择 ShotVideo / TitleCard
 //
-// 转场: 每个 shot 视觉层包 FadeInOut, 在边界做 0.33s (10 帧) cross-fade
+// v4 修正: shot 之间直接硬切, 不做 fade / 不做 transition / 不做 fade-through-black
+//   - 删除了 v3 的本地 FadeInOut 组件
+//   - 外层背景由 #0a0a0a 改为 transparent, 避免间隙期间透出黑色
 
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
@@ -20,20 +22,6 @@ import {BilingualSubtitle} from '../components/BilingualSubtitle';
 import {ShotVideo} from '../components/ShotVideo';
 import {TitleCard} from '../components/TitleCard';
 import shotsData from '../../content/shots.json';
-
-// 转场组件: 在 shot 边界做 cross-fade
-// fadeFrames = 10 帧 ≈ 0.33s @ 30fps
-const FADE_FRAMES = 10;
-const FadeInOut: React.FC<{
-  durationInFrames: number;
-  children: React.ReactNode;
-}> = ({durationInFrames, children}) => {
-  const frame = useCurrentFrame();
-  const fadeIn = Math.min(1, frame / FADE_FRAMES);
-  const fadeOut = Math.min(1, (durationInFrames - frame) / FADE_FRAMES);
-  const opacity = Math.min(fadeIn, fadeOut);
-  return <AbsoluteFill style={{opacity}}>{children}</AbsoluteFill>;
-};
 
 const FPS = 30;
 
@@ -97,14 +85,14 @@ export const LuhuoMain: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        background: '#0a0a0a',
+        background: 'transparent',
         color: '#f7f3ea',
         fontFamily:
           '"Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif',
         overflow: 'hidden',
       }}
     >
-      {/* 视觉层: 用 Sequence 把每个 shot 串行铺满 */}
+      {/* 视觉层: 每个 shot 直接渲染, 不再包裹 FadeInOut, shot 之间直接硬切 */}
       {data.shots.map((shot, i) => {
         const startFrame = Math.round(shot.start * fps);
         const endFrame = Math.round(shot.end * fps);
@@ -116,21 +104,19 @@ export const LuhuoMain: React.FC = () => {
             durationInFrames={shotDuration}
             name={shot.id}
           >
-            <FadeInOut durationInFrames={shotDuration}>
-              {shot.kind === 'title' || shot.kind === 'ending' ? (
-                <TitleCard
-                  title={shot.zhSubtitle || data.title}
-                  subtitle={shot.kind === 'ending' ? 'ENDING' : 'LUHUO HERITAGE'}
-                  variant={shot.kind === 'ending' ? 'ending' : 'title'}
-                />
-              ) : (
-                <ShotVideo
-                  visual={shot.visual}
-                  title={shot.zhSubtitle}
-                  subtitle={shot.id?.toUpperCase()}
-                />
-              )}
-            </FadeInOut>
+            {shot.kind === 'title' || shot.kind === 'ending' ? (
+              <TitleCard
+                title={shot.zhSubtitle || data.title}
+                subtitle={shot.kind === 'ending' ? 'ENDING' : 'LUHUO HERITAGE'}
+                variant={shot.kind === 'ending' ? 'ending' : 'title'}
+              />
+            ) : (
+              <ShotVideo
+                visual={shot.visual}
+                title={shot.zhSubtitle}
+                subtitle={shot.id?.toUpperCase()}
+              />
+            )}
           </Sequence>
         );
       })}
