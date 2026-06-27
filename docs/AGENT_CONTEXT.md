@@ -10,39 +10,43 @@
 
 - **片名**：《一件藏袍里的炉霍》
 - **主题**：四川甘孜炉霍县藏族传统文化 / 炉霍博物馆相关视觉短片
-- **时长**：约 60 秒（v5 实测 ~60.31s）
+- **时长**：约 60 秒（v6 实测 ~60.31s）
 - **比例**：横屏 16:9
 - **规格**：1920×1080 · 30fps · MP4 · h264
 - **旁白**：普通话男声
-- **字幕**：中文字幕真正贴底；藏文字段先留空（不渲染）
-- **技术路线**：Remotion + MiniMax TTS + MiniMax Hub 图生视频（Hailuo-2.3）+ ChatGPT 静态图
+- **字幕**：中文字幕 + 藏文字幕（双语，真正贴底；藏文字段由 ChatGPT 提供，文博宣传片书面风格，**发布前建议藏语母语者校对**）
+- **封面**：1920×1080 PNG，**文字由代码叠加**（避免 AI 生成伪藏文）
+- **技术路线**：Remotion + MiniMax TTS + MiniMax Hub 图生视频（Hailuo-2.3）+ ChatGPT 静态图 + ffmpeg 抽帧
 
 ---
 
-## 2. 当前 v5 状态
+## 2. 当前 v6 状态
 
-v5 已出片（替代 v4.1）：
+v6 已出片（替代 v5）：
 
 - **当前成片**：`out/luhuo-main.mp4`（不入库）
 - v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
 - v4.1 备份：`out/luhuo-main-v4.1-no-empty-head-tail.mp4`
 - v5 备份：`out/luhuo-main-v5-12video.mp4`
+- v6 备份：`out/luhuo-main-v6-tibetan-subtitle.mp4`
+- **封面**：`out/luhuo-cover-v6.png`（1920×1080）
 - 时长：约 60.31 秒（1808 帧 @ 30fps）
 - 分辨率：1920×1080
-- 视觉结构：**12 段真视频**（v3 Hub 5 段 + v5 Hub 7 段）
-  - v3 Hub 生成：shot-01 / shot-04 / shot-06 / shot-10 / shot-12
-  - v5 Hub 生成：shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11
+- 视觉结构：**12 段真视频**
 - 转场：**shot 之间直接硬切**，无 fade、无黑场、无 crossfade
-- 字幕：中文字幕**真正贴底**（普通 absolute div + bottom: 32）；藏文为空时不渲染
+- 字幕：**中文字幕 + 藏文字幕**（藏文 12 段全部填入，`boSubtitle` 非空；藏文 + 中文分两行；字号小幅下调）
 
-### v5 升级（最新）
+### v6 升级（最新）
 
 | 类别 | 改动 |
 |---|---|
-| 7 段静态图 → 视频 | `content/shots.json` shot-02/03/05/07/08/09/11 的 `visual.type` 从 `image` 改为 `video`，src 从 `images/shot-XX.png` 改为 `videos/shot-XX.mp4` |
-| Hub 生成 | 用 MiniMax Hub / Hailuo-2.3 / 图生视频 first_frame / 1080P / 实际时长 5.875s / 段 |
-| 不固定时长 | 不锁 6s，按 Hub 实际输出；本地通过 shots.json start/end + Remotion 自动适配 |
-| 不覆盖 5 段 | shot-01/04/06/10/12.mp4 完全未动 |
+| 12 段藏文字幕 | `content/shots.json` 12 段 `boSubtitle` 从 `""` 填入 ChatGPT 提供的藏文（文博宣传片书面风格） |
+| 字幕字号小幅下调 | `BilingualSubtitle.tsx` 默认值：zh 44→40、bo 36→32、bottom 32→24、padding 14px 48px→10px 36px |
+| LuhuoCover composition | 新建 `src/compositions/LuhuoCover.tsx`（1920×1080），文字全部由代码叠加（避免 AI 伪藏文） |
+| 封面背景抽帧 | 新建 `scripts/extract-cover-frame.mjs`（ffmpeg 从 shot-12.mp4 抽中间帧到 `public/luhuo-cover-bg.png`，已 .gitignore 排除） |
+| root.tsx 注册 | 新增 LuhuoCover composition（durationInFrames=1，width/height=1920×1080） |
+
+### v5 升级
 
 ### v4.1 修复
 
@@ -74,13 +78,15 @@ v5 已出片（替代 v4.1）：
 5. ✅ **首帧空画面**（v4.1）：第一个 shot 强制 frame 0
 6. ✅ **尾段空画面**（v4.1）：最后一个 shot 撑到 durationInFrames
 7. ✅ **7 段静态图升级为视频**（v5）：12 段全是真视频
+8. ✅ **12 段藏文字幕**（v6）：boSubtitle 全部非空
+9. ✅ **1920×1080 封面**（v6）：LuhuoCover composition，文字由代码叠加
 
 ## 4. 仍未处理的问题
 
-1. ⚠️ shot-01 / 04 / 10 / 12 的 video 5.88s > Sequence 4-5s，会被 Remotion 截断（v5 接受）
-2. ⚠️ shot-08 sequence 5.93s > video 5.88s，后段约 0.05s 可能是空帧（v5 接受，肉眼几乎不可见）
-3. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
-4. 藏文字幕补齐
+1. ⚠️ shot-01 / 04 / 10 / 12 的 video 5.88s > Sequence 4-5s，会被 Remotion 截断（v6 接受）
+2. ⚠️ shot-08 sequence 5.93s > video 5.88s，后段约 0.05s 可能是空帧（v6 接受，肉眼几乎不可见）
+3. ⚠️ **藏文未做母语者校对**（ChatGPT 提供的书面风格，**公开发布前必须**）
+4. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
 5. 旁白与镜头起止时间更精细对齐
 
 ---

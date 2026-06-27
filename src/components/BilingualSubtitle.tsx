@@ -26,9 +26,9 @@ export type BilingualSubtitleProps = {
 export const BilingualSubtitle: React.FC<BilingualSubtitleProps> = ({
   zh,
   bo = '',
-  fontSizeZh = 44,
-  fontSizeBo = 36,
-  bottom = 32,
+  fontSizeZh = 40,
+  fontSizeBo = 32,
+  bottom = 24,
   maxWidthRatio = 0.84,
   bgOpacity = 0.6,
 }) => {
@@ -65,7 +65,7 @@ export const BilingualSubtitle: React.FC<BilingualSubtitleProps> = ({
           gap: hasBoth ? 10 : 0,
           maxWidth: `${maxWidthRatio * 100}%`,
           minWidth: '40%',
-          padding: '14px 48px',
+          padding: '10px 36px',
           textAlign: 'center',
           textShadow: '0 2px 6px rgba(0,0,0,0.6)',
         }}

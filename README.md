@@ -19,18 +19,27 @@
 - ChatGPT 图生图（首帧参考图）
 - ffmpeg / ffprobe（封装、探测）
 
-## 当前状态（v5 12-video）
+## 当前状态（v6 藏文字幕 + 封面）
 
 - 已出片：`out/luhuo-main.mp4`（不入库）
   - v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
   - v4.1 备份：`out/luhuo-main-v4.1-no-empty-head-tail.mp4`
   - v5 备份：`out/luhuo-main-v5-12video.mp4`
+  - v6 备份：`out/luhuo-main-v6-tibetan-subtitle.mp4`
+- 封面：`out/luhuo-cover-v6.png`（1920×1080，代码叠加文字，非 AI 生成）
 - 视觉结构：**12 段真视频**（v3 Hub 5 段 + v5 Hub 7 段）
-  - 全部 video：`shot-01 ~ shot-12` 都是 `videos/shot-XX.mp4`
 - 音频：1 条普通话旁白，含 254 个字级时间戳
-- 字幕：中文字幕真正贴底（不再偏中），藏文为空时不渲染
+- 字幕：**中文字幕 + 藏文字幕**双语（中上中文 / 中下藏文 / 藏文空时不渲染 / 字号 v6 小幅下调）
 
-### v5 升级（最新）
+### v6 升级（最新）
+
+1. **12 段藏文字幕已补齐**：shot-01 ~ shot-12 的 `boSubtitle` 从 `""` 填入 ChatGPT 提供的藏文（文博宣传片书面风格，**发布前建议藏语母语者校对**）
+2. **字幕字号小幅下调**：中文 44→40、藏文 36→32、bottom 32→24、padding 14px 48px→10px 36px，更不挡画面
+3. **新增 LuhuoCover composition**：1920×1080 封面，**文字由代码叠加**（避免 AI 伪藏文）
+4. **封面背景**：从 `public/videos/shot-12.mp4` 抽帧（脚本 `scripts/extract-cover-frame.mjs`）
+5. **保留所有 v4 / v4.1 / v5 修复**：黑场转场删除、字幕贴底、首帧 frame 0、尾帧 durationInFrames 兜底、12 段真视频
+
+### v5 升级
 
 1. **7 段静态图升级为视频**：shot-02/03/05/07/08/09/11 通过 MiniMax Hub (Hailuo-2.3, 图生视频 first_frame, 1080P) 生成
 2. **12 段全是真视频**：v3 的 5 段 + v5 的 7 段，总计 12 段视频
@@ -118,12 +127,12 @@ remotion.config.ts                   Remotion 配置
 
 ## 后续工程优先级（不在本任务范围）
 
-v3 → v4 → v4.1 → v5 全部修复：黑场转场、字幕贴底、首帧 frame 0、尾帧 durationInFrames、shot-06 空帧、3 个间隙、7 段静态图升级为视频。
+v3 → v4 → v4.1 → v5 → v6 全部修复：黑场转场、字幕贴底、首帧 frame 0、尾帧 durationInFrames、shot-06 空帧、3 个间隙、7 段静态图升级为视频、12 段藏文字幕、1920×1080 封面。
 
 仍未处理：
-1. shot-01 / 04 / 08 / 10 / 11 / 12 的 video 5.88s 与 Sequence 4-5s 不严格对齐，会被 Remotion 截断或尾部 0.05s 空帧（v5 接受，v6 再处理）
+1. shot-01 / 04 / 08 / 10 / 11 / 12 的 video 5.88s 与 Sequence 4-5s 不严格对齐，会被 Remotion 截断或尾部 0.05s 空帧（v6 接受）
 2. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
-3. 藏文字幕补齐
+3. 藏语母语者最终校对（**公开发布前必须**）
 4. 旁白与镜头起止时间更精细对齐
 
 ## 许可与备注
