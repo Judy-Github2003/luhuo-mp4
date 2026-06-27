@@ -1,8 +1,13 @@
 # Shot 时长排查 (v4)
 
-> 生成时间: 2026-06-27T15:57:08.317Z
+> 生成时间: 2026-06-27T16:24:02.411Z
 > 数据源: `content/shots.json` (未修改)
 > 脚本: `scripts/probe-shot-durations.mjs`
+
+> **v4.1 补充说明**：本表显示的 `shot-12.end = 57.46` 是 shots.json 原始值。
+> v4.1 在渲染层把最后一个 shot 的 `endFrame` 撑到 `durationInFrames`（1808 帧 = 60.27s），
+> 所以实际渲染时 shot-12 Sequence 会延伸到 composition 末尾，不会出现 2.8s 尾段空画面。
+> **不要把本表的 shot-12 数值当作 v4.1 的 bug**。
 
 ## 1. 时长对比表
 

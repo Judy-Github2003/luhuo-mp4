@@ -10,7 +10,7 @@
 
 - **片名**：《一件藏袍里的炉霍》
 - **主题**：四川甘孜炉霍县藏族传统文化 / 炉霍博物馆相关视觉短片
-- **时长**：约 60 秒（v4 实测 60.31s）
+- **时长**：约 60 秒（v4.1 实测 ~60.31s）
 - **比例**：横屏 16:9
 - **规格**：1920×1080 · 30fps · MP4 · h264
 - **旁白**：普通话男声
@@ -19,12 +19,13 @@
 
 ---
 
-## 2. 当前 v4 状态
+## 2. 当前 v4.1 状态
 
-v4 已出片（替代 v3）：
+v4.1 已出片（替代 v4）：
 
 - **当前成片**：`out/luhuo-main.mp4`（不入库）
 - v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
+- v4.1 备份：`out/luhuo-main-v4.1-no-empty-head-tail.mp4`
 - 时长：约 60.31 秒（1808 帧 @ 30fps）
 - 分辨率：1920×1080
 - 视觉结构：
@@ -32,6 +33,14 @@ v4 已出片（替代 v3）：
   - 7 张静态图：`shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11`
 - 转场：**shot 之间直接硬切**，无 fade、无黑场、无 crossfade
 - 字幕：中文字幕**真正贴底**（普通 absolute div + bottom: 32）；藏文为空时不渲染
+
+### v4.1 修复（最新）
+
+| 类别 | 改动 |
+|---|---|
+| 首帧兜底 | `LuhuoMain.tsx` map 块：第一个 shot 强制 `startFrame = 0`（避免 shot-01.start=0.04 → frame 1 起 → 第 0 帧空） |
+| 尾帧兜底 | `LuhuoMain.tsx` map 块：最后一个 shot 强制 `endFrame = durationInFrames`（避免 shot-12.end=57.46 → 1808 帧 → 1724-1808 共 2.8s 空） |
+| shots.json | **未改**（避免被 TTS 脚本覆盖） |
 
 ### v4 主要变更
 
@@ -45,18 +54,20 @@ v4 已出片（替代 v3）：
 
 ---
 
-## 3. 已修复的问题（v4 完成）
+## 3. 已修复的问题
 
 按优先级：
 
-1. ✅ **黑场转场**：删除 FadeInOut，shot 之间直接硬切
-2. ✅ **字幕贴底**：外层改为普通 absolute div
-3. ✅ **shot-06 空帧 / 黑底**：end 改 28.07，Sequence 与 video 对齐
-4. ✅ **3 个间隙**：shot-04/07/10 的 start 填实
+1. ✅ **黑场转场**（v4）：删除 FadeInOut，shot 之间直接硬切
+2. ✅ **字幕贴底**（v4）：外层改为普通 absolute div
+3. ✅ **shot-06 空帧 / 黑底**（v4）：end 改 28.07，Sequence 与 video 对齐
+4. ✅ **3 个间隙**（v4）：shot-04/07/10 的 start 填实
+5. ✅ **首帧空画面**（v4.1）：第一个 shot 强制 frame 0
+6. ✅ **尾段空画面**（v4.1）：最后一个 shot 撑到 durationInFrames
 
 ## 4. 仍未处理的问题
 
-1. ⚠️ shot-01 / shot-04 / shot-10 / shot-12 的 video 5.88s > Sequence 4-5s，会被 Remotion 截断（用户接受，v5 再处理）
+1. ⚠️ shot-01 / shot-04 / shot-10 / shot-12 的 video 5.88s > Sequence 4-5s，会被 Remotion 截断（v4 接受，v5 再处理）
 2. 12 独立视频架构（用 Remotion / ffmpeg 拼接）
 3. 藏文字幕补齐
 4. 旁白与镜头起止时间更精细对齐
@@ -128,6 +139,20 @@ D:\YouTubeVideo\luhuo-mp4\
 - ❌ **绝对不要**加任何 fade 转场 / FadeInOut / 黑底 / fade-through-black
 
 **本项目当前首要任务**是让 ChatGPT 能通过 GitHub 查阅代码。次要任务是排查剩余时长精度问题。
+
+---
+
+## 9. v4.1 补充：shot-12 end 显示问题
+
+`docs/shot-durations.md` 表格中 `shot-12` 的 `end` 仍显示 `57.46s` —— **这是 v4.1 的预期行为**，不是 bug。
+
+原因：
+
+- v4.1 没有改 `content/shots.json`（避免被 TTS 脚本覆盖）
+- v4.1 在 Remotion 渲染层把最后一个 shot 的 `endFrame` 撑到 `durationInFrames`
+- 所以 `probe-shot-durations.mjs` 输出仍是 shots.json 原始值 57.46，但实际渲染时 shot-12 Sequence 会延伸到 composition 末尾
+
+校验方法：直接看 v4.1 mp4 末尾帧，或在浏览器预览中确认 shot-12 持续到最后一帧。
 
 ---
 

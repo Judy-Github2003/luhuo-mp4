@@ -19,14 +19,23 @@
 - ChatGPT 图生图（首帧参考图）
 - ffmpeg / ffprobe（封装、探测）
 
-## 当前状态（v4）
+## 当前状态（v4.1）
 
-- 已出片：`out/luhuo-main.mp4`（不入库），v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
+- 已出片：`out/luhuo-main.mp4`（不入库）
+  - v4 备份：`out/luhuo-main-v4-no-black-subtitle-bottom.mp4`
+  - v4.1 备份：`out/luhuo-main-v4.1-no-empty-head-tail.mp4`
 - 视觉结构：**5 段真视频 + 7 张静态图**（共 12 个镜头）
   - 真视频：`shot-01 / shot-04 / shot-06 / shot-10 / shot-12`
   - 静态图：`shot-02 / shot-03 / shot-05 / shot-07 / shot-08 / shot-09 / shot-11`
 - 音频：1 条普通话旁白，含 254 个字级时间戳
 - 字幕：中文字幕真正贴底（不再偏中），藏文为空时不渲染
+
+### v4.1 修复（最新）
+
+1. **首帧兜底**：第一个 shot 强制从 `frame 0` 开始（避免 shot-01.start=0.04 → frame 1 起 → 第 0 帧空）
+2. **尾帧兜底**：最后一个 shot 撑到 `durationInFrames`（避免 shot-12.end=57.46 → 1808 帧 → 1724-1808 共 2.8s 空）
+3. **渲染层兜底**，不改 `shots.json`（避免被 TTS 脚本覆盖）
+4. **中间 shot 仍按 shots.json** 的 start/end，shot 之间仍直接硬切
 
 ### v4 主要修复
 

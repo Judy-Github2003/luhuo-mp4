@@ -15,6 +15,10 @@
 // v4 修正: shot 之间直接硬切, 不做 fade / 不做 transition / 不做 fade-through-black
 //   - 删除了 v3 的本地 FadeInOut 组件
 //   - 外层背景由 #0a0a0a 改为 transparent, 避免间隙期间透出黑色
+// v4.1 修正: 第一个 shot 强制从 frame 0 开始, 最后一个 shot 撑到 durationInFrames
+//   - 避免首帧空画面 (shot-01.start = 0.04 -> Math.round = 1, frame 0 无 Sequence)
+//   - 避免尾段空画面 (shot-12.end = 57.46 -> frame 1724 结束, 但总长 1808 帧, 2.8s 空)
+//   - 不引入任何转场, 中间 shot 仍按 shots.json
 
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
@@ -94,8 +98,13 @@ export const LuhuoMain: React.FC = () => {
     >
       {/* 视觉层: 每个 shot 直接渲染, 不再包裹 FadeInOut, shot 之间直接硬切 */}
       {data.shots.map((shot, i) => {
-        const startFrame = Math.round(shot.start * fps);
-        const endFrame = Math.round(shot.end * fps);
+        const isFirstShot = i === 0;
+        const isLastShot = i === data.shots.length - 1;
+
+        // v4.1: 第一个 shot 强制从 frame 0 开始, 最后一个 shot 撑到 composition 结束
+        // 避免首帧 / 尾段空画面, 不引入任何转场
+        const startFrame = isFirstShot ? 0 : Math.round(shot.start * fps);
+        const endFrame = isLastShot ? durationInFrames : Math.round(shot.end * fps);
         const shotDuration = Math.max(1, endFrame - startFrame);
         return (
           <Sequence
